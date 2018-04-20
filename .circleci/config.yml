@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build 
+          command: |
+            pwd
+            ls -lrt
+            docker build -t bzon/docker-android-build-box-2 .
+      - run:
+          name: Docker push
+          command: |
+            docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+            docker push bzon/docker-android-build-box-2:latest
